@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unit converter</title>
+  <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+</head>
+<body class="blue lighten-5">
+  
+
+  <nav>
+    <div class="row nav-wrapper blue darken-3">      
+       <ul id="nav-mobile" class="center">
+        <li class="col s3"><a href="distance.html">Distance</a></li>
+        <li class="col s3"><a href="surface.html">Area</a></li>
+        <li class="col s3"><a href="volume.html">Volume</a></li>
+        <li class="col s3"><a href="weight.html">Weight</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h3 class="flow-text center-align">Weight</h3>
+  <div class="row">
+    
+      <span class="flow-text col s1">From </span>
+    
+    
+      <span class="flow-text col s1 offset-s8">To </span>
+    
+  </div>
+  <br>
+  <div class="row">
+    <div class="col s3"> 
+      <ul class="tabs" id="myFrom">
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text active">SI</a></li>
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text">USC</a></li>
+      </ul>
+
+
+
+      <ul class="pagination" id="myFromMetric">
+        <li class="col s12 waves-effect indigo darken-4"><a id="from1" href="#!">g</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="from2" href="#!">mg</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4 active"><a id="from3" href="#!">kg</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="from4" href="#!">t</a></li><br>
+      </ul>
+
+
+
+    </div>
+
+    <div class="col s4 offset-s1 blue lighten-4">
+      <div class="col s12 center-align">
+        <span class="flow-text">Input your number here:</span> 
+        <input class="center-align" type="number" id="inNumber" value="42" onchange="convert()" onkeyup="convert()" onkeydown="convert()" oninput="convert()" style="font-size: 30px;"><br>
+      </div>
+        <div class="col s12 center-align">
+          <span class="flow-text">Your converted number is here:</span> 
+          <br>
+        
+          <span id="outPrint" class="center-align flow-text teal-text text-accent-4" style="font-size: 30px;"></span><br>
+        </div>
+    </div>
+
+
+    <div class="col s3 offset-s1"> 
+      <ul class="tabs" id="myTo">
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text active">SI</a></li>
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text">USC</a></li>
+      </ul>
+
+      <ul class="pagination" id="myToMetric">
+        <li class="col s12 waves-effect indigo darken-4"><a id="to1" href="#!">g</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="to2" href="#!">mg</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4 active"><a id="to3" href="#!">kg</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="to4" href="#!">t</a></li><br>
+      </ul>
+    </div>
+
+    <div class="col 12 offset-s3">
+      <img class="materialboxed" width="500" src="weight.png" style="margin-top: 10%">
+    </div>
+  </div>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.materialboxed');
+    var instances = M.Materialbox.init(elems);
+    });
+    
+    var elFrom = document.getElementById("myFrom");
+    var instanceFrom = M.Tabs.init(elFrom);
+
+    var elTo = document.getElementById("myTo");
+    var instanceTo = M.Tabs.init(elTo);
+
+    $( document ).ready(function() {
+      $( "#myFrom" ).on( "click", function() {          
+        var metric=instanceFrom.el.getElementsByClassName("active")[0].innerHTML;
+        
+        setMetric(metric,"from");
+        
+      });
+    });
+
+    $( document ).ready(function() {
+      $( "#myTo" ).on( "click", function() {          
+        var metric=instanceTo.el.getElementsByClassName("active")[0].innerHTML;
+        setMetric(metric,"to");
+      });
+    });
+
+
+    var header = document.getElementById("myFromMetric");
+    var btns = header.getElementsByClassName("col");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function() {
+      var current = header.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      
+      this.className += " active";
+      });
+    }
+
+
+    var header2 = document.getElementById("myToMetric");
+    var btns2 = header2.getElementsByClassName("col");
+    for (var i = 0; i < btns2.length; i++) {
+      btns2[i].addEventListener("click", function() {
+      var current2 = header2.getElementsByClassName("active");
+      current2[0].className = current2[0].className.replace(" active", "");
+      
+      this.className += " active";
+      });
+    }
+
+    function setMetric(metric,id){      
+      if(metric == "SI"){
+        document.getElementById(id+"1").innerHTML = "g";
+        document.getElementById(id+"2").innerHTML = "mg";
+        document.getElementById(id+"3").innerHTML = "kg";
+        document.getElementById(id+"4").innerHTML = "t";
+      }
+      else if(metric == "USC"){
+        document.getElementById(id+"1").innerHTML = "grain";
+        document.getElementById(id+"2").innerHTML = "oz";
+        document.getElementById(id+"3").innerHTML = "lb";
+        document.getElementById(id+"4").innerHTML = "ton";
+      }
+    }
+
+    function convert(){
+      var result;
+      var unit1 = document.getElementById("myFromMetric").getElementsByClassName("active")[0].childNodes[0].innerHTML;
+      var unit2 = document.getElementById("myToMetric").getElementsByClassName("active")[0].childNodes[0].innerHTML;
+      var num = document.getElementById("inNumber").value;
+      console.log(num);
+      
+      if(unit1 == "g"){
+          if(unit2 == "g"){
+            result = num;
+          }
+          else if(unit2 == "mg"){
+            result = (num*1000);
+          }
+          else if(unit2 == "kg"){
+            result = (num*0.001);
+          }
+          else if(unit2 == "t"){
+            result = (num*(1/1000000));
+          }
+          else if(unit2 == "grain"){
+            result = (num*15.4323584);
+          }
+          else if(unit2 == "oz"){
+            result = (num*0.0352739619);
+          }
+          else if(unit2 == "lb"){
+            result = (num*0.00220462262);
+          }
+          else if(unit2 == "ton"){
+            result = (num*(9.84206528/10000000));
+          }
+      }
+      else if(unit1 == "mg"){
+          if(unit2 == "g"){
+            result = num * 0.001;
+          }
+          else if(unit2 == "mg"){
+            result = num;
+          }
+          else if(unit2 == "kg"){
+            result = (num*(1/1000000));
+          }
+          else if(unit2 == "t"){
+            result = (num*(1/1000000000));
+          }
+          else if(unit2 == "grain"){
+            result = (num*0.0154323584);
+          }
+          else if(unit2 == "oz"){
+            result = (num*(3.52739619/100000));
+          }
+          else if(unit2 == "lb"){
+            result = (num*(2.20462262/1000000));
+          }
+          else if(unit2 == "ton"){
+            result = (num*(9.84206528/10000000000));
+          }
+      }
+      else if(unit1 == "kg"){
+          if(unit2 == "g"){
+            result = num * 1000;
+          }
+          else if(unit2 == "mg"){
+            result = (num * 1000000);
+          }
+          else if(unit2 == "kg"){
+            result = num;
+          }
+          else if(unit2 == "t"){
+            result = num*0.001;
+          }
+          else if(unit2 == "grain"){
+            result = (num*15432.3584);
+          }
+          else if(unit2 == "oz"){
+            result = (num*35.2739619);
+          }
+          else if(unit2 == "lb"){
+            result = (num*2.20462262);
+          }
+          else if(unit2 == "ton"){
+            result = (num*0.000984206528);
+          }
+      }
+      else if(unit1 == "t"){
+          if(unit2 == "g"){
+            result = (num * 1000000);
+          }
+          else if(unit2 == "mg"){
+            result = (num * 1000000000);
+          }
+          else if(unit2 == "kg"){
+            result = (num * 1000);
+          }
+          else if(unit2 == "t"){
+            result = num;
+          }
+          else if(unit2 == "grain"){
+            result = (num*15432358.4);
+          }
+          else if(unit2 == "oz"){
+            result = (num*35273.9619);
+          }
+          else if(unit2 == "lb"){
+            result = (num*2204.62262);
+          }
+          else if(unit2 == "ton"){
+            result = (num*0.984206528);
+          }
+      }
+      else if(unit1 == "grain"){
+          if(unit2 == "g"){
+            result = (num * 0.06479891);
+          }
+          else if(unit2 == "mg"){
+            result = (num * 64.79891);
+          }
+          else if(unit2 == "kg"){
+            result = (num*(6.479891/100000));
+          }
+          else if(unit2 == "t"){
+            result = (num*(6.479891/100000000));
+          }
+          else if(unit2 == "grain"){
+            result = (num);
+          }
+          else if(unit2 == "oz"){
+            result = (num*0.00228571429);
+          }
+          else if(unit2 == "lb"){
+            result = (num*0.000142857143);
+          }
+          else if(unit2 == "ton"){
+            result = (num*(6.37755102/100000000));
+          }
+      }
+      else if(unit1 == "oz"){
+        if(unit2 == "g"){
+            result = (num * 28.3495231);
+          }
+          else if(unit2 == "mg"){
+            result = (num * 28349.5231);
+          }
+          else if(unit2 == "kg"){
+            result = (num * 0.0283495231);
+          }
+          else if(unit2 == "t"){
+            result = (num*(2.83495231/100000));
+          }
+          else if(unit2 == "grain"){
+            result = (num*437.5);
+          }
+          else if(unit2 == "oz"){
+            result = (num);
+          }
+          else if(unit2 == "lb"){
+            result = (num*0.0625);
+          }
+          else if(unit2 == "ton"){
+            result = (num*(2.79017857/100000));
+          }
+      }
+      else if(unit1 == "lb"){
+          if(unit2 == "g"){
+            result = (num * 453.59237);
+          }
+          else if(unit2 == "mg"){
+            result = (num * 453592.37);
+          }
+          else if(unit2 == "kg"){
+            result = (num *0.45359237);
+          }
+          else if(unit2 == "t"){
+            result = (num*0.00045359237);
+          }
+          else if(unit2 == "grain"){
+            result = (num*7000);
+          }
+          else if(unit2 == "oz"){
+            result = (num*16);
+          }
+          else if(unit2 == "lb"){
+            result = (num);
+          }
+          else if(unit2 == "ton"){
+            result = (num*0.000446428571);
+          }
+      }
+      else if(unit1 == "ton"){
+          if(unit2 == "g"){
+            result = (num * 1016046.91);
+          }
+          else if(unit2 == "mg"){
+            result = (num*(1.01604691/1000000000));
+          }
+          else if(unit2 == "kg"){
+            result = (num * 1016.04691);
+          }
+          else if(unit2 == "t"){
+            result = (num*1.01604691);
+          }
+          else if(unit2 == "grain"){
+            result = (num*15680000);
+          }
+          else if(unit2 == "oz"){
+            result = (num*35840);
+          }
+          else if(unit2 == "lb"){
+            result = (num*2240);
+          }
+          else if(unit2 == "ton"){
+            result = (num);
+          }
+      }
+      
+      document.getElementById("outPrint").innerHTML = result;
+    }
+
+
+  
+  </script>
+</body>
+
+</html>

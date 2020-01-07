@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unit converter</title>
+  <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+</head>
+<body class="blue lighten-5">
+  
+
+  <nav>
+    <div class="row nav-wrapper blue darken-3">      
+       <ul id="nav-mobile" class="center">
+        <li class="col s3"><a href="distance.html">Distance</a></li>
+        <li class="col s3"><a href="surface.html">Area</a></li>
+        <li class="col s3"><a href="volume.html">Volume</a></li>
+        <li class="col s3"><a href="weight.html">Weight</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h3 class="flow-text center-align">Area</h3>
+  <div class="row">
+    
+      <span class="flow-text col s1">From </span>
+    
+    
+      <span class="flow-text col s1 offset-s8">To </span>
+    
+  </div>
+  <br>
+  <div class="row">
+    <div class="col s3"> 
+      <ul class="tabs" id="myFrom">
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text active">SI</a></li>
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text">USC</a></li>
+      </ul>
+
+
+
+      <ul class="pagination" id="myFromMetric">
+        <li class="col s12 waves-effect indigo darken-4"><a id="from1" href="#!">cm2</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="from2" href="#!">dm2</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4 active"><a id="from3" href="#!">m2</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="from4" href="#!">hectare</a></li><br>
+      </ul>
+
+
+
+    </div>
+
+    <div class="col s4 offset-s1 blue lighten-4">
+      <div class="col s12 center-align">
+        <span class="flow-text">Input your number here:</span> 
+        <input class="center-align" type="number" id="inNumber" value="42" onchange="convert()" onkeyup="convert()" onkeydown="convert()" oninput="convert()" style="font-size: 30px;"><br>
+      </div>
+        <div class="col s12 center-align">
+          <span class="flow-text">Your converted number is here:</span> 
+          <br>
+        
+          <span id="outPrint" class="center-align flow-text teal-text text-accent-4" style="font-size: 30px;"></span><br>
+        </div>
+    </div>
+
+
+    <div class="col s3 offset-s1"> 
+      <ul class="tabs" id="myTo">
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text active">SI</a></li>
+        <li class="tab col s6 blue darken-2"><a href="#" class="white-text">USC</a></li>
+      </ul>
+
+      <ul class="pagination" id="myToMetric">
+        <li class="col s12 waves-effect indigo darken-4"><a id="to1" href="#!">cm2</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="to2" href="#!">dm2</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4 active"><a id="to3" href="#!">m2</a></li><br>
+        <li class="col s12 waves-effect indigo darken-4"><a id="to4" href="#!">hectare</a></li><br>
+      </ul>
+    </div>
+
+    <div class="col 3 offset-s3">
+      <img class="materialboxed" width="500" src="area.png" style="margin-top: 10%">
+    </div>
+  </div>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.materialboxed');
+    var instances = M.Materialbox.init(elems);
+    });
+    
+    var elFrom = document.getElementById("myFrom");
+    var instanceFrom = M.Tabs.init(elFrom);
+
+    var elTo = document.getElementById("myTo");
+    var instanceTo = M.Tabs.init(elTo);
+
+    $( document ).ready(function() {
+      $( "#myFrom" ).on( "click", function() {          
+        var metric=instanceFrom.el.getElementsByClassName("active")[0].innerHTML;
+        
+        setMetric(metric,"from");
+        
+      });
+    });
+
+    $( document ).ready(function() {
+      $( "#myTo" ).on( "click", function() {          
+        var metric=instanceTo.el.getElementsByClassName("active")[0].innerHTML;
+        setMetric(metric,"to");
+      });
+    });
+
+
+    var header = document.getElementById("myFromMetric");
+    var btns = header.getElementsByClassName("col");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function() {
+      var current = header.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      
+      this.className += " active";
+      });
+    }
+
+
+    var header2 = document.getElementById("myToMetric");
+    var btns2 = header2.getElementsByClassName("col");
+    for (var i = 0; i < btns2.length; i++) {
+      btns2[i].addEventListener("click", function() {
+      var current2 = header2.getElementsByClassName("active");
+      current2[0].className = current2[0].className.replace(" active", "");
+      
+      this.className += " active";
+      });
+    }
+
+    function setMetric(metric,id){      
+      if(metric == "SI"){
+        document.getElementById(id+"1").innerHTML = "cm2";
+        document.getElementById(id+"2").innerHTML = "dm2";
+        document.getElementById(id+"3").innerHTML = "m2";
+        document.getElementById(id+"4").innerHTML = "hectare";
+      }
+      else if(metric == "USC"){
+        document.getElementById(id+"1").innerHTML = "inch2";
+        document.getElementById(id+"2").innerHTML = "foot2";
+        document.getElementById(id+"3").innerHTML = "yard2";
+        document.getElementById(id+"4").innerHTML = "acre";
+      }
+    }
+
+    function convert(){
+      var result;
+      var unit1 = document.getElementById("myFromMetric").getElementsByClassName("active")[0].childNodes[0].innerHTML;
+      var unit2 = document.getElementById("myToMetric").getElementsByClassName("active")[0].childNodes[0].innerHTML;
+      var num = document.getElementById("inNumber").value;
+      console.log(num);
+      
+      if(unit1 == "cm2"){
+          if(unit2 == "cm2"){
+            result = num;
+          }
+          else if(unit2 == "dm2"){
+            result = (num*0.01);
+          }
+          else if(unit2 == "m2"){
+            result = (num*0.0001);
+          }
+          else if(unit2 == "hectare"){
+            result = (num/100000000);
+          }
+          else if(unit2 == "inch2"){
+            result = (num*0.15500031);
+          }
+          else if(unit2 == "foot2"){
+            result = (num*0.00107639104);
+          }
+          else if(unit2 == "yard2"){
+            result = (num*0.000119599005);
+          }
+          else if(unit2 == "acre"){
+            result = (num*(2.47105381/100000000));
+          }
+      }
+      else if(unit1 == "dm2"){
+          if(unit2 == "cm2"){
+            result = num * 100;
+          }
+          else if(unit2 == "dm2"){
+            result = num;
+          }
+          else if(unit2 == "m2"){
+            result = (num*0.01);
+          }
+          else if(unit2 == "hectare"){
+            result = (num/1000000);
+          }
+          else if(unit2 == "inch2"){
+            result = (num*15.500031);
+          }
+          else if(unit2 == "foot2"){
+            result = (num*0.107639104);
+          }
+          else if(unit2 == "yard2"){
+            result = (num*0.0119599005);
+          }
+          else if(unit2 == "acre"){
+            result = (num*(2.47105381/1000000));
+          }
+      }
+      else if(unit1 == "m2"){
+          if(unit2 == "cm2"){
+            result = num * 10000;
+          }
+          else if(unit2 == "dm2"){
+            result = (num * 100);
+          }
+          else if(unit2 == "m2"){
+            result = num;
+          }
+          else if(unit2 == "hectare"){
+            result = num*0.0001;
+          }
+          else if(unit2 == "inch2"){
+            result = (num*1550.0031);
+          }
+          else if(unit2 == "foot2"){
+            result = (num*10.7639104);
+          }
+          else if(unit2 == "yard2"){
+            result = (num*1.19599005);
+          }
+          else if(unit2 == "acre"){
+            result = (num*0.000247105381);
+          }
+      }
+      else if(unit1 == "hectare"){
+          if(unit2 == "cm2"){
+            result = (num * 100000000);
+          }
+          else if(unit2 == "dm2"){
+            result = (num * 1000000);
+          }
+          else if(unit2 == "m2"){
+            result = (num * 10000);
+          }
+          else if(unit2 == "hectare"){
+            result = num;
+          }
+          else if(unit2 == "inch2"){
+            result = (num*15500031);
+          }
+          else if(unit2 == "foot2"){
+            result = (num*107639.104);
+          }
+          else if(unit2 == "yard2"){
+            result = (num*11959.9005);
+          }
+          else if(unit2 == "acre"){
+            result = (num*2.47105381);
+          }
+      }
+      else if(unit1 == "inch2"){
+          if(unit2 == "cm2"){
+            result = (num * 6.4516);
+          }
+          else if(unit2 == "dm2"){
+            result = (num * 0.064516);
+          }
+          else if(unit2 == "m2"){
+            result = (num * 0.00064516);
+          }
+          else if(unit2 == "hectare"){
+            result = (num*(6.4516/100000000));
+          }
+          else if(unit2 == "inch2"){
+            result = (num);
+          }
+          else if(unit2 == "foot2"){
+            result = (num*0.00694444444);
+          }
+          else if(unit2 == "yard2"){
+            result = (num*0.000771604938);
+          }
+          else if(unit2 == "acre"){
+            result = (num*(1.59422508/10000000));
+          }
+      }
+      else if(unit1 == "foot2"){
+        if(unit2 == "cm2"){
+            result = (num * 929.0304);
+          }
+          else if(unit2 == "dm2"){
+            result = (num * 9.290304);
+          }
+          else if(unit2 == "m2"){
+            result = (num * 0.09290304);
+          }
+          else if(unit2 == "hectare"){
+            result = (num*(9.290304/1000000));
+          }
+          else if(unit2 == "inch2"){
+            result = (num * 144);
+          }
+          else if(unit2 == "foot2"){
+            result = (num);
+          }
+          else if(unit2 == "yard2"){
+            result = (num*0.111111111);
+          }
+          else if(unit2 == "acre"){
+            result = (num*(2.29568411/100000));
+          }
+      }
+      else if(unit1 == "yard2"){
+          if(unit2 == "cm2"){
+            result = (num * 8361.2736);
+          }
+          else if(unit2 == "dm2"){
+            result = (num * 83.612736);
+          }
+          else if(unit2 == "m2"){
+            result = (num * 0.83612736);
+          }
+          else if(unit2 == "hectare"){
+            result = (num*(8.3612736/100000));
+          }
+          else if(unit2 == "inch2"){
+            result = (num * 1296);
+          }
+          else if(unit2 == "foot2"){
+            result = (num * 9);
+          }
+          else if(unit2 == "yard2"){
+            result = (num);
+          }
+          else if(unit2 == "acre"){
+            result = (num*0.00020661157);
+          }
+      }
+      else if(unit1 == "acre"){
+          if(unit2 == "cm2"){
+            result = (num * 40468564.2);
+          }
+          else if(unit2 == "dm2"){
+            result = (num * 404685.642);
+          }
+          else if(unit2 == "m2"){
+            result = (num * 4046.85642);
+          }
+          else if(unit2 == "hectare"){
+            result = (num*0.404685642);
+          }
+          else if(unit2 == "inch2"){
+            result = (num * 6272640);
+          }
+          else if(unit2 == "foot2"){
+            result = (num*43560);
+          }
+          else if(unit2 == "yard2"){
+            result = (num*4840);
+          }
+          else if(unit2 == "acre"){
+            result = (num);
+          }
+      }
+      
+      document.getElementById("outPrint").innerHTML = result;
+    }
+
+
+  
+  </script>
+</body>
+
+</html>
